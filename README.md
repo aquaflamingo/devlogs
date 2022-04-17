@@ -1,6 +1,8 @@
 # Devlog
 
-Project based session logging for solo-developers with optional mirroring.
+Project based session logging for solo-developers with the option to mirror changes to another directory.
+
+![Maintain non-source controlled logs across various projects with mirroring to a single](./docs/mirroring.png)
 
 ## Installation
 
