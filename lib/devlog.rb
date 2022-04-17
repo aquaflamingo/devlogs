@@ -3,23 +3,23 @@
 require_relative "devlog/version"
 require_relative "devlog/repository"
 
-require 'thor'
+require "thor"
 
 module Devlog
-  class App < Thor                                                 # [1]
-    package_name "devlog"                                             # [2]
+  class App < Thor # [1]
+    package_name "devlog" # [2]
 
     def self.exit_on_failure?
       true
     end
-    
+
     desc "init", "Initialize a developer logs for project"
-    method_options :force => :boolean, :alias => :string  
+    method_options force: :boolean, alias: :string
     def init
       puts "Creating devlog repository"
 
       Repository::Initialize.run(
-        {force: options.force?},
+        { force: options.force? },
         File.join(".", "__devlog")
       )
 
@@ -35,6 +35,7 @@ module Devlog
     end
 
     private
+
     def repo
       @repo ||= Repository.load
     end
