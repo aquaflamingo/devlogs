@@ -2,7 +2,10 @@
 
 require "bundler/gem_tasks"
 require "rubocop/rake_task"
+require "devlog"
 
-RuboCop::RakeTask.new
+task :build do 
+  Devlog::App.start
+end
 
-task default: :rubocop
+task default: :build
