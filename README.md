@@ -3,6 +3,8 @@
 
 Project based session logging for solo-developers with the option to mirror changes to another directory.
 
+https://stacktrace.one/blog/avoid-project-management-solo-dev/
+
 ![Maintain non-source controlled logs across various projects with mirroring to a single](./docs/mirroring.png)
 
 ## Installation
