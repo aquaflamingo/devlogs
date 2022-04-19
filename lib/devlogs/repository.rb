@@ -147,11 +147,11 @@ class Repository
 
       FileUtils.mkdir_p(path)
       config_file = File.join(path, CONFIG_FILE)
-      
+
       # Replace spaces in project name with underscores
       sanitized_project_name = results[:name].gsub(/ /, "_").downcase
 
-      info_file_name = "#{}_devlogs.info.md"
+      info_file_name = "#{sanitized_project_name}_devlogs.info.md"
       info_file = File.join(path, info_file_name)
 
       # Create config file
@@ -167,7 +167,7 @@ class Repository
       end
 
       # Git ignore if specified
-      if results[:gitignore] 
+      if results[:gitignore]
         File.open(File.join(path), "a") do |f|
           f.puts DEFAULT_DIRECTORY_NAME
         end
