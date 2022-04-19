@@ -42,6 +42,7 @@ class Repository
       File.open(entry_file_path, "w") do |f|
         f.write <<~ENDOFFILE
           # #{time.strftime(DEFAULT_TIME_FORMAT_TEXT_ENTRY)}
+          Tags: #dev, #log
 
           What did you do today?
 
@@ -146,7 +147,11 @@ class Repository
 
       FileUtils.mkdir_p(path)
       config_file = File.join(path, CONFIG_FILE)
-      info_file_name = "#{results[:name].gsub(/ /, "_")}_devlogs.info"
+
+      # Replace spaces in project name with underscores
+      sanitized_project_name = results[:name].gsub(/ /, "_").downcase
+
+      info_file_name = "#{sanitized_project_name}_devlogs.info.md"
       info_file = File.join(path, info_file_name)
 
       # Create config file
@@ -154,9 +159,17 @@ class Repository
         f.write results.to_yaml
       end
 
+      # Create the info file
       File.open(info_file, "w") do |f|
         f.puts "# #{results[:name]}"
         f.puts (results[:desc]).to_s
+      end
+
+      # Git ignore if specified
+      if results[:gitignore]
+        File.open(File.join(path), "a") do |f|
+          f.puts DEFAULT_DIRECTORY_NAME
+        end
       end
     end
 
@@ -180,6 +193,10 @@ class Repository
         key(:mirror) do
           key(:use_mirror).ask("Do you want to mirror these logs?", convert: :boolean)
           key(:path).ask("Path to mirror directory: ")
+        end
+
+        key(:gitignore).ask("Do you want to gitignore the devlogs repository?") do |q|
+          q.required true
         end
       end
     end
