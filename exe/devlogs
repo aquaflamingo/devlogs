@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "devlog"
+require "devlogs"
 
-Devlog::App.start(ARGV)
+Devlogs::App.start(ARGV)

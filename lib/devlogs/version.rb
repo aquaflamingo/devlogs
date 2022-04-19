@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module Devlog
-  VERSION = "0.1.3"
+module Devlogs
+  VERSION = "0.1.4"
 end

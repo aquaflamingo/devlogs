@@ -6,27 +6,27 @@ require "yaml"
 require "rsync"
 require "pry"
 
-# Repostiroy is an accessor object for the devlog directory
+# Repostiroy is an accessor object for the devlogs directory
 class Repository
-  CONFIG_FILE = ".devlog.config.yml"
+  CONFIG_FILE = ".devlogs.config.yml"
 
   # TODO: should be part of configuration
-  DEFAULT_LOG_SUFFIX = "devlog.md"
+  DEFAULT_LOG_SUFFIX = "devlogs.md"
   DEFAULT_DIRECTORY_PATH = "."
-  DEFAULT_DIRECTORY_NAME = "__devlog"
+  DEFAULT_DIRECTORY_NAME = "__devlogs"
 
   # Example: 11-22-2022_1343
   DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm"
   DEFAULT_TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M"
 
-  # Initializes a __devlog repository with the supplied configuration
+  # Initializes a __devlogs repository with the supplied configuration
   # @param repo_config [Repository::Config]
   #
   def initialize(repo_config)
     @config = repo_config
   end
 
-  # Creates a new __devlog entry for recording session completion
+  # Creates a new __devlogs entry for recording session completion
   #
   # @returns nil
   def create
@@ -115,7 +115,7 @@ class Repository
       @path = p
     end
 
-    # Returns whether or not the devlog repository is configured to mirror
+    # Returns whether or not the devlogs repository is configured to mirror
     #
     # @returns [Boolean]
     def mirror?
@@ -133,7 +133,7 @@ class Repository
   # Initialize is an execution object which initializes a Repository on the
   # filesystem
   class Initialize
-    # Creates a new devlog repository at the provided path
+    # Creates a new devlogs repository at the provided path
     def self.run(opts = {}, path = File.join(DEFAULT_DIRECTORY_PATH, DEFAULT_DIRECTORY_NAME))
       exists = File.exist?(path)
 
@@ -146,7 +146,7 @@ class Repository
 
       FileUtils.mkdir_p(path)
       config_file = File.join(path, CONFIG_FILE)
-      info_file_name = "#{results[:name].gsub(/ /, "_")}_devlog.info"
+      info_file_name = "#{results[:name].gsub(/ /, "_")}_devlogs.info"
       info_file = File.join(path, info_file_name)
 
       # Create config file
