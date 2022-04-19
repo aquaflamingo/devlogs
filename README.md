@@ -1,5 +1,5 @@
 # devlogs
-![Version](https://img.shields.io/badge/version-0.1.0-green)
+![Version](https://img.shields.io/badge/version-0.1.4-green)
 
 Project based session logging for solo-developers with the option to mirror changes to another directory.
 
