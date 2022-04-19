@@ -9,8 +9,8 @@ module Devlogs
   #
   # The CLI devlogs App
   #
-  class App < Thor 
-    package_name "devlogs" 
+  class App < Thor
+    package_name "devlogs"
 
     # Returns exit with non zero status when an exception occurs
     def self.exit_on_failure?
