@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require_relative "lib/devlog/version"
+require_relative "lib/devlogs/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "devlog"
-  spec.version       = Devlog::VERSION
+  spec.name          = "devlogs"
+  spec.version       = Devlogs::VERSION
   spec.authors       = ["aquaflamingo"]
   spec.email         = ["16901597+aquaflamingo@users.noreply.github.com"]
 
   spec.summary       = "A command line utility to create and manage project management with a logs repository."
   spec.description   = "Create, manage and sync developer project logs"
-  spec.homepage      = "http://github.com/aquaflamingo/devlog"
+  spec.homepage      = "http://github.com/aquaflamingo/devlogs"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/aquaflamingo/devlog"
+  spec.metadata["source_code_uri"] = "https://github.com/aquaflamingo/devlogs"
   spec.metadata["changelog_uri"] = "https://github.com/aquaflamingo/releases"
 
   # Specify which files should be added to the gem when it is released.

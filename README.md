@@ -1,4 +1,4 @@
-# Devlog
+# devlogs
 ![Version](https://img.shields.io/badge/version-0.1.0-green)
 
 Project based session logging for solo-developers with the option to mirror changes to another directory.
@@ -12,7 +12,7 @@ https://stacktrace.one/blog/avoid-project-management-solo-dev/
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'devlog'
+gem 'devlogs'
 ```
 
 And then execute:
@@ -21,16 +21,16 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install devlog
+    $ gem install devlogs
 
 ## Usage
 ### Initialize
-Inside your project initialize the `__devlog` repository:
+Inside your project initialize the `__devlogs` repository:
 ```bash
-$ devlog init
+$ devlogs init
 ```
 
-Follow the prompts to setup the project configuration located in `__devlog/.devlog.config`. 
+Follow the prompts to setup the project configuration located in `__devlogs/.devlogs.config`. 
 
 You can setup a mirror directory path in the configuration stage to sync changes to another directory on your machine, for example to Obsidian.md.
 
@@ -38,7 +38,7 @@ Example:
 
 ```
 myproject
- __devlog
+ __devlogs
    >> content
 ```
 
@@ -53,7 +53,7 @@ obsidianvault
 Once you are done for the day or session run the `entry` command:
 
 ```bash
-devlog entry
+devlogs entry
 ```
 
 Your editor will pop up and you can fill in cliff notes.
@@ -76,7 +76,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/devlog.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/devlogs.
 
 ## License
 

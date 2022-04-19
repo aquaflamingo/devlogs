@@ -2,6 +2,6 @@
 
 require "bundler/gem_tasks"
 require "rubocop/rake_task"
-require "devlog"
+require "devlogs"
 
 task default: :build
