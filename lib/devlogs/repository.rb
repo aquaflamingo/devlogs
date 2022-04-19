@@ -42,6 +42,7 @@ class Repository
       File.open(entry_file_path, "w") do |f|
         f.write <<~ENDOFFILE
           # #{time.strftime(DEFAULT_TIME_FORMAT_TEXT_ENTRY)}
+          Tags: #devlog
 
           What did you do today?
 
@@ -148,7 +149,9 @@ class Repository
       config_file = File.join(path, CONFIG_FILE)
       
       # Replace spaces in project name with underscores
-      info_file_name = "#{results[:name].gsub(/ /, "_")}_devlogs.info"
+      sanitized_project_name = results[:name].gsub(/ /, "_").downcase
+
+      info_file_name = "#{}_devlogs.info.md"
       info_file = File.join(path, info_file_name)
 
       # Create config file
@@ -159,6 +162,7 @@ class Repository
       # Create the info file
       File.open(info_file, "w") do |f|
         f.puts "# #{results[:name]}"
+        f.puts "Tags: #devlog"
         f.puts (results[:desc]).to_s
       end
 
