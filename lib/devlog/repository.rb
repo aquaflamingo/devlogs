@@ -1,27 +1,34 @@
+# frozen_string_literal: true
+
 require "fileutils"
 require "tty-prompt"
 require "yaml"
 require "rsync"
 require "pry"
 
+# Repostiroy is an accessor object for the devlog directory
 class Repository
-  CONFIG_FILE = ".devlog.config.yml".freeze
+  CONFIG_FILE = ".devlog.config.yml"
 
   # TODO: should be part of configuration
-  DEFAULT_LOG_SUFFIX = "devlog.md".freeze
-  DEFAULT_DIRECTORY_PATH = ".".freeze
-  DEFAULT_DIRECTORY_NAME = "__devlog".freeze
+  DEFAULT_LOG_SUFFIX = "devlog.md"
+  DEFAULT_DIRECTORY_PATH = "."
+  DEFAULT_DIRECTORY_NAME = "__devlog"
 
   # Example: 11-22-2022_1343
-  DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y_%k%M".freeze
-  DEFAULT_TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M".freeze
+  DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm"
+  DEFAULT_TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M"
 
   # Initializes a __devlog repository with the supplied configuration
+  # @param repo_config [Repository::Config]
+  #
   def initialize(repo_config)
     @config = repo_config
   end
 
   # Creates a new __devlog entry for recording session completion
+  #
+  # @returns nil
   def create
     time = Time.new
     prefix = time.strftime(DEFAULT_TIME_FORMAT_FILE_PREFIX)
@@ -33,12 +40,12 @@ class Repository
     unless File.exist?(entry_file_path)
       # Add default boiler plate if the file does not exist yet
       File.open(entry_file_path, "w") do |f|
-        f.write <<~EOM
+        f.write <<~ENDOFFILE
           # #{time.strftime(DEFAULT_TIME_FORMAT_TEXT_ENTRY)}
 
           What did you do today?
 
-        EOM
+        ENDOFFILE
       end
     end
 
@@ -51,6 +58,8 @@ class Repository
 
   # Syncs the directory changes to the (optional) mirror repository
   # specified in the configuration.
+  #
+  # @returns nil
   def sync
     if @config.mirror?
       # Run rsync with -a to copy directories recursively
@@ -73,6 +82,10 @@ class Repository
   end
 
   class << self
+    # Loads a repository from the provided path
+    #
+    # @returns [Repository]
+    #
     def load(path = File.join(DEFAULT_DIRECTORY_PATH, DEFAULT_DIRECTORY_NAME))
       exists = File.exist?(path)
 
@@ -88,6 +101,8 @@ class Repository
     end
   end
 
+  # Config is a configuration data object for storing Repository configuration
+  # in memory for access.
   class Config
     attr_reader :name, :description, :mirror, :path
 
@@ -100,16 +115,25 @@ class Repository
       @path = p
     end
 
+    # Returns whether or not the devlog repository is configured to mirror
+    #
+    # @returns [Boolean]
     def mirror?
       @mirror.use_mirror
     end
 
+    # Utility method to build a configuration from a Hash
+    #
+    # @returns [Repository::Config]
     def self.hydrate(cfg)
       new(cfg[:name], cfg[:description], cfg[:mirror], cfg[:path])
     end
   end
 
+  # Initialize is an execution object which initializes a Repository on the
+  # filesystem
   class Initialize
+    # Creates a new devlog repository at the provided path
     def self.run(opts = {}, path = File.join(DEFAULT_DIRECTORY_PATH, DEFAULT_DIRECTORY_NAME))
       exists = File.exist?(path)
 
@@ -136,6 +160,9 @@ class Repository
       end
     end
 
+    # Creates an interactive prompt for user input
+    #
+    # @returns [Hash]
     def self.prompt_for_info
       prompt = TTY::Prompt.new
 

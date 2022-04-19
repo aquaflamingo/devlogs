@@ -6,13 +6,20 @@ require_relative "devlog/repository"
 require "thor"
 
 module Devlog
-  class App < Thor # [1]
-    package_name "devlog" # [2]
+  #
+  # The CLI Devlog App
+  #
+  class App < Thor
+    package_name "devlog"
 
+    # Returns exit with non zero status when an exception occurs
     def self.exit_on_failure?
       true
     end
 
+    #
+    # Initializes a +devlog+ repository with a configuration
+    #
     desc "init", "Initialize a developer logs for project"
     method_options force: :boolean, alias: :string
     def init
@@ -26,7 +33,11 @@ module Devlog
       puts "Created devlog"
     end
 
-    desc "entry", "Create a new devlog entry"   # [4]
+    #
+    # Creates a devlog entry in the repository and syncs changes
+    # to the mirrored directory if set
+    #
+    desc "entry", "Create a new devlog entry" # [4]
     def entry
       puts "Creating new entry..."
       repo.create
@@ -36,6 +47,8 @@ module Devlog
 
     private
 
+    # Helper method for repository loading
+    #
     def repo
       @repo ||= Repository.load
     end
