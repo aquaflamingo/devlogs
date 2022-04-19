@@ -146,6 +146,8 @@ class Repository
 
       FileUtils.mkdir_p(path)
       config_file = File.join(path, CONFIG_FILE)
+      
+      # Replace spaces in project name with underscores
       info_file_name = "#{results[:name].gsub(/ /, "_")}_devlogs.info"
       info_file = File.join(path, info_file_name)
 
@@ -154,9 +156,17 @@ class Repository
         f.write results.to_yaml
       end
 
+      # Create the info file
       File.open(info_file, "w") do |f|
         f.puts "# #{results[:name]}"
         f.puts (results[:desc]).to_s
+      end
+
+      # Git ignore if specified
+      if results[:gitignore] 
+        File.open(File.join(path), "a") do |f|
+          f.puts DEFAULT_DIRECTORY_NAME
+        end
       end
     end
 
@@ -180,6 +190,10 @@ class Repository
         key(:mirror) do
           key(:use_mirror).ask("Do you want to mirror these logs?", convert: :boolean)
           key(:path).ask("Path to mirror directory: ")
+        end
+
+        key(:gitignore).ask("Do you want to gitignore the devlogs repository?") do |q|
+          q.required true
         end
       end
     end
