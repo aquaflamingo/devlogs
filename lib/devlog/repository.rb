@@ -13,7 +13,7 @@ class Repository
   DEFAULT_DIRECTORY_NAME = "__devlog".freeze
 
   # Example: 11-22-2022_1343
-  DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y_%k%M".freeze
+  DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm".freeze
   DEFAULT_TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M".freeze
 
   # Initializes a __devlog repository with the supplied configuration
