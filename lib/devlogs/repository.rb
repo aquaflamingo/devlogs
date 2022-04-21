@@ -167,7 +167,9 @@ class Repository
 
       # Git ignore if specified
       if results[:gitignore]
-        File.open(File.join(path), "a") do |f|
+        gitignore = File.join(path, ".gitignore")
+
+        File.open(gitignore, "a") do |f|
           f.puts DEFAULT_DIRECTORY_NAME
         end
       end
