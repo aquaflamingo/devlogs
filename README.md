@@ -1,6 +1,4 @@
 # devlogs
-![Version](https://img.shields.io/badge/version-0.1.4-green)
-
 Project based session logging for solo-developers with the option to mirror changes to another directory.
 
 https://stacktrace.one/blog/avoid-project-management-solo-dev/
