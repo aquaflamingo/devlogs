@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devlogs (0.1.5)
+    devlogs (0.1.6)
       rsync (~> 1.0, >= 1.0.9)
       thor (~> 1.2.1)
       tty-prompt (~> 0.23.1)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "version"
 require_relative "repository"
 require "thor"
@@ -14,14 +16,13 @@ module Devlogs
       true
     end
 
-    # 
-    # Returns version of the cli 
-    # 
-    desc 'version', 'Prints the current version'
+    #
+    # Returns version of the cli
+    #
+    desc "version", "Prints the current version"
     def version
       puts "Running version #{Devlogs::VERSION}"
     end
-
 
     #
     # Initializes a +devlogs+ repository with a configuration
