@@ -21,7 +21,7 @@ module Devlogs
     #
     desc "version", "Prints the current version"
     def version
-      puts "Running version #{Devlogs::VERSION}"
+      puts Devlogs::VERSION
     end
 
     #
