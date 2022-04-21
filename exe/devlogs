@@ -3,4 +3,4 @@
 
 require "devlogs"
 
-Devlogs::App.start(ARGV)
+Devlogs::CLI.start(ARGV)
