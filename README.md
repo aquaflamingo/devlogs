@@ -23,12 +23,12 @@ Or install it yourself as:
 
 ## Usage
 ### Initialize
-Inside your project initialize the `__devlogs` repository:
+Inside your project initialize the `_devlogs` repository:
 ```bash
 $ devlogs init
 ```
 
-Follow the prompts to setup the project configuration located in `__devlogs/.devlogs.config`. 
+Follow the prompts to setup the project configuration located in `_devlogs/.devlogs.config`. 
 
 You can setup a mirror directory path in the configuration stage to sync changes to another directory on your machine, for example to Obsidian.md.
 
@@ -36,7 +36,7 @@ Example:
 
 ```
 myproject
- __devlogs
+ _devlogs
    >> content
 ```
 
@@ -65,6 +65,15 @@ Your editor will pop up and you can fill in cliff notes.
 ```
 
 Save and if you set a mirror it will sync over!
+
+### Retrieve previous entry
+You can use the `last` command to retrieve the most recent entry
+
+```bash
+devlogs last
+```
+
+The `--open` command will cause the entry to be opened in a new default editor.
 
 ## Development
 

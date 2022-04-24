@@ -2,6 +2,7 @@
 
 require_relative "version"
 require_relative "repository"
+require_relative "editor"
 require "thor"
 
 module Devlogs
@@ -34,12 +35,27 @@ module Devlogs
 
       Repository::Initialize.run(
         { force: options.force? },
-        File.join(".", "__devlogs")
+        File.join(".", "_devlogs")
       )
 
       puts "Created devlogs"
     end
 
+    #
+    # Retrieves the most recent entry from the repository
+    #
+    desc "last", "Retrieves the last entry in the repository"
+    method_options open: :boolean, alias: :string
+    def last
+      puts "Reading last entry"
+      last_entry = repo.ls.first
+
+      if options.open?
+        Editor.open(last_entry)
+      else
+        puts File.read(last_entry)
+      end
+    end
     #
     # Creates a devlogs entry in the repository and syncs changes
     # to the mirrored directory if set
