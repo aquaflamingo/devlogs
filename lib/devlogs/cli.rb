@@ -44,7 +44,7 @@ module Devlogs
     #
     # Retrieves the most recent entry from the repository
     #
-    desc "last", "Retrieves the last entry in the repository" 
+    desc "last", "Retrieves the last entry in the repository"
     method_options open: :boolean, alias: :string
     def last
       puts "Reading last entry"

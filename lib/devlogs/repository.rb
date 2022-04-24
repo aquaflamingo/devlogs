@@ -5,8 +5,8 @@ require "tty-prompt"
 require "yaml"
 require "rsync"
 require "pry"
-require 'time'
-require_relative 'editor'
+require "time"
+require_relative "editor"
 
 # Repostiroy is an accessor object for the devlogs directory
 class Repository
@@ -21,7 +21,7 @@ class Repository
   DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm"
   DEFAULT_TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M"
 
-  VALID_DIRECTION = [:asc, :desc].freeze
+  VALID_DIRECTION = %i[asc desc].freeze
 
   # Initializes a _devlogs repository with the supplied configuration
   # @param repo_config [Repository::Config]
@@ -85,9 +85,9 @@ class Repository
 
   # Lists the files in the repository
   def ls(direction = :desc)
-    raise ArgumentError.new("Must be one of: " + VALID_DIRECTION) unless VALID_DIRECTION.include?(direction.to_sym)
+    raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
 
-    Dir.glob(File.join(@config.path, "*_#{DEFAULT_LOG_SUFFIX}")).sort_by do |fpath| 
+    Dir.glob(File.join(@config.path, "*_#{DEFAULT_LOG_SUFFIX}")).sort_by do |fpath|
       # The date is joined by two underscores to the suffix
       date, = File.basename(fpath).split("__")
 
@@ -127,7 +127,7 @@ class Repository
   class Config
     attr_reader :name, :description, :mirror, :path_value
 
-    # Configuration associated with the Mirror 
+    # Configuration associated with the Mirror
     MirrorConfig = Struct.new(:use_mirror, :path, keyword_init: true)
 
     def initialize(name, desc, mirror, p)
@@ -143,7 +143,7 @@ class Repository
     def mirror?
       @mirror.use_mirror
     end
-  
+
     def path(with_trailing: false)
       if with_trailing
         @path_value[-1] == "/" ? @path_value : @path_value + "/"
@@ -151,7 +151,6 @@ class Repository
         @path_value
       end
     end
-
 
     # Utility method to build a configuration from a Hash
     #

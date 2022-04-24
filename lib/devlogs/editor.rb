@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Wrapper for terminal editor
 class Editor
   def initialize
@@ -12,7 +14,6 @@ class Editor
   end
 
   class << self
-
     # Opens the file at +path+ using system editor
     def open(path)
       session = new
