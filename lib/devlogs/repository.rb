@@ -5,6 +5,8 @@ require "tty-prompt"
 require "yaml"
 require "rsync"
 require "pry"
+require 'time'
+require_relative 'editor'
 
 # Repostiroy is an accessor object for the devlogs directory
 class Repository
@@ -13,20 +15,22 @@ class Repository
   # TODO: should be part of configuration
   DEFAULT_LOG_SUFFIX = "devlogs.md"
   DEFAULT_DIRECTORY_PATH = "."
-  DEFAULT_DIRECTORY_NAME = "__devlogs"
+  DEFAULT_DIRECTORY_NAME = "_devlogs"
 
   # Example: 11-22-2022_1343
   DEFAULT_TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm"
   DEFAULT_TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M"
 
-  # Initializes a __devlogs repository with the supplied configuration
+  VALID_DIRECTION = [:asc, :desc].freeze
+
+  # Initializes a _devlogs repository with the supplied configuration
   # @param repo_config [Repository::Config]
   #
   def initialize(repo_config)
     @config = repo_config
   end
 
-  # Creates a new __devlogs entry for recording session completion
+  # Creates a new _devlogs entry for recording session completion
   #
   # @returns nil
   def create
@@ -50,9 +54,7 @@ class Repository
       end
     end
 
-    editor_program = ENV["EDITOR"]
-
-    system("#{editor_program} #{entry_file_path}")
+    Editor.open(entry_file_path)
 
     puts "Writing entry to #{entry_file_path}.."
   end
@@ -67,9 +69,8 @@ class Repository
 
       # Use trailing slash to avoid sub-directory
       # See rsync manual page
-      path = @config.path[-1] == "/" ? @config.path : @config.path + "/"
 
-      Rsync.run("-av", path, @config.mirror.path) do |result|
+      Rsync.run("-av", @config.path(with_trailing: true), @config.mirror.path) do |result|
         if result.success?
           puts "Mirror sync complete."
           result.changes.each do |change|
@@ -78,6 +79,25 @@ class Repository
         else
           raise "Failed to sync: #{result.error}"
         end
+      end
+    end
+  end
+
+  # Lists the files in the repository
+  def ls(direction = :desc)
+    raise ArgumentError.new("Must be one of: " + VALID_DIRECTION) unless VALID_DIRECTION.include?(direction.to_sym)
+
+    Dir.glob(File.join(@config.path, "*_#{DEFAULT_LOG_SUFFIX}")).sort_by do |fpath| 
+      # The date is joined by two underscores to the suffix
+      date, = File.basename(fpath).split("__")
+
+      time_ms = Time.strptime(date, "%m-%d-%Y").to_i
+
+      # Descending
+      if direction == :asc
+        time_ms
+      else
+        -time_ms
       end
     end
   end
@@ -105,15 +125,16 @@ class Repository
   # Config is a configuration data object for storing Repository configuration
   # in memory for access.
   class Config
-    attr_reader :name, :description, :mirror, :path
+    attr_reader :name, :description, :mirror, :path_value
 
+    # Configuration associated with the Mirror 
     MirrorConfig = Struct.new(:use_mirror, :path, keyword_init: true)
 
     def initialize(name, desc, mirror, p)
       @name = name
       @description = desc
       @mirror = MirrorConfig.new(mirror)
-      @path = p
+      @path_value = p
     end
 
     # Returns whether or not the devlogs repository is configured to mirror
@@ -122,6 +143,15 @@ class Repository
     def mirror?
       @mirror.use_mirror
     end
+  
+    def path(with_trailing: false)
+      if with_trailing
+        @path_value[-1] == "/" ? @path_value : @path_value + "/"
+      else
+        @path_value
+      end
+    end
+
 
     # Utility method to build a configuration from a Hash
     #
