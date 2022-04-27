@@ -56,6 +56,16 @@ module Devlogs
         puts File.read(last_entry)
       end
     end
+
+    #
+    # Synchronizes changes to mirrored repository
+    #
+    desc "sync_mirror", "Sync changes in devlogs repository to the configured mirror"
+    def sync_mirror
+      # TODO: repo.mirror_manager 
+      #
+    end
+
     #
     # Creates a devlogs entry in the repository and syncs changes
     # to the mirrored directory if set

@@ -28,6 +28,7 @@ class Repository
   #
   def initialize(repo_config)
     @config = repo_config
+@mirror_manager = MirrorManager.new(@config.mi
   end
 
   # Creates a new _devlogs entry for recording session completion
@@ -157,6 +158,16 @@ class Repository
     # @returns [Repository::Config]
     def self.hydrate(cfg)
       new(cfg[:name], cfg[:description], cfg[:mirror], cfg[:path])
+    end
+  end
+
+  class MirrorManager
+    def initialize(mirror)
+      @mirror_config = mirror
+    end
+
+    def mirror?
+      # TODO: Refactor config
     end
   end
 
