@@ -78,12 +78,14 @@ module Devlogs
     desc "ls", "Lists the repository logs and allows you to select"
     def ls
       entries = repo.ls
-      entry_names = entries.map do |e|
-        File.basename(e)
-      end
 
-      result = build_select_prompt(data: entry_names)
+      # Use the file names as visible keys for the prompt
+      entry_names = entries.map { |e| File.basename(e) }
 
+      # Build the TTY:Prompt
+      result = build_select_prompt(data: entry_names, text: "Select a log entry...")
+
+      # Open in paging program
       Pager.open(entries[result])
     end
 

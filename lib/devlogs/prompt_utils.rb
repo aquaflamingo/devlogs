@@ -1,10 +1,20 @@
 require "tty-prompt"
 
+# 
+# Utility module for tty-prompt library
+#
 module PromptUtils
-  def build_select_prompt(data:) 
-    prompt = TTY::Prompt.new
+  #
+  # Builds a basic select prompt using the provided data
+  #
+  # @param data [Array<String>]
+  #
+  # @returns String
+  #
+  def build_select_prompt(data:, text:) 
+    ttyprompt = TTY::Prompt.new
 
-    prompt.select("Select log entry") do |menu|
+    ttyprompt.select(text) do |menu|
       data.each_with_index do |d, index|
         menu.choice d, index
       end
