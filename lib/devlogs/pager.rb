@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Wrapper for terminal reader
-require_relative './executable.rb'
+require_relative "./executable.rb"
 
 # Wrapper for terminal pager
 class Pager < Executable

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require_relative './executable.rb'
+
+require_relative "./executable.rb"
 
 # Wrapper for terminal editor
 class Editor < Executable

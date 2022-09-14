@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "tty-prompt"
 
-# 
+#
 # Utility module for tty-prompt library
 #
 module PromptUtils
@@ -11,7 +13,7 @@ module PromptUtils
   #
   # @returns String
   #
-  def build_select_prompt(data:, text:) 
+  def build_select_prompt(data:, text:)
     ttyprompt = TTY::Prompt.new
 
     ttyprompt.select(text) do |menu|

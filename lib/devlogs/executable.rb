@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Executable
   def initialize
-    raise NotImplementedError.new("Abstract class")
+    raise NotImplementedError, "Abstract class"
   end
 
   # Opens the file contained at the path
