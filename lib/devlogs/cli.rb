@@ -3,6 +3,8 @@
 require_relative "version"
 require_relative "repository"
 require_relative "editor"
+require_relative "pager"
+require_relative "prompt_utils"
 require "thor"
 
 module Devlogs
@@ -10,6 +12,8 @@ module Devlogs
   # The CLI devlogs CLI
   #
   class CLI < Thor
+    include PromptUtils
+
     package_name "devlogs"
 
     # Returns exit with non zero status when an exception occurs
@@ -66,6 +70,23 @@ module Devlogs
       repo.create
 
       repo.sync
+    end
+
+    #
+    # Lists repository logs
+    #
+    desc "ls", "Lists the repository logs and allows you to select"
+    def ls
+      entries = repo.ls
+
+      # Use the file names as visible keys for the prompt
+      entry_names = entries.map { |e| File.basename(e) }
+
+      # Build the TTY:Prompt
+      result = build_select_prompt(data: entry_names, text: "Select a log entry...")
+
+      # Open in paging program
+      Pager.open(entries[result])
     end
 
     private

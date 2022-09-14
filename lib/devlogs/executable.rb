@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "./executable.rb"
-
-# Wrapper for terminal editor
-class Editor < Executable
+class Executable
   def initialize
-    @program = ENV["EDITOR"]
+    raise NotImplementedError, "Abstract class"
   end
 
   # Opens the file contained at the path
