@@ -12,17 +12,17 @@ class RepositoryInitializer
       RepositoryConfigStore.new
     end
 
-    exists = File.exist?(config.path)
+    exists = File.exist?(config.file_path)
 
     if exists && !opts[:force]
-      puts "Log repository already exists in #{path}. Aborting..."
+      puts "Log repository already exists in #{config.file_path}. Aborting..."
       raise RuntimeError
     end
 
     results = prompt_for_info
 
     # Create the config directory
-    FileUtils.mkdir_p(config.dir_path)
+    FileUtils.mkdir_p(config.dir)
 
     # Create config file
     File.open(config.file_path, "w") do |f|
@@ -34,7 +34,7 @@ class RepositoryInitializer
   
     # Create the info file
     info_file_name = "#{sanitized_project_name}_devlogs.info.md"
-    info_file = File.join(path, info_file_name)
+    info_file = File.join(config.dir, info_file_name)
 
     File.open(info_file, "w") do |f|
       f.puts "# #{results[:name]}"
@@ -44,7 +44,10 @@ class RepositoryInitializer
     # Copy the default template file inside the gem into the repository
     default_template_path = File.join(__dir__, "templates", "__log_template.erb.md")
 
-    FileUtils.cp(default_template_path, config.template_file_path)
+    # FIXME 
+    File.join(@config.dir, RepositoryConfigStore::TEMPLATE_FILE) 
+
+    FileUtils.cp(default_template_path)
   end
 
   # Creates an interactive prompt for user input

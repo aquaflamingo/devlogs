@@ -68,8 +68,8 @@ module Devlogs
     # Creates a devlogs entry in the repository and syncs changes
     # to the mirrored directory if set
     #
-    desc "entry", "Create a new devlogs entry" # [4]
-    def entry
+    desc "new", "Create a new devlogs entry" # [4]
+    def new
       puts "Creating new entry..."
       repo.create
 
@@ -82,6 +82,11 @@ module Devlogs
     desc "ls", "Lists the repository logs and allows you to select"
     def ls
       entries = repo.ls
+
+      if entries.size < 1 
+        puts "No logs present in this repository"
+        exit 0
+      end
 
       # Use the file names as visible keys for the prompt
       entry_names = entries.map { |e| File.basename(e) }

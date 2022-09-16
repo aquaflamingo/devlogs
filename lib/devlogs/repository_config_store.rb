@@ -13,7 +13,10 @@ class RepositoryConfigStore
 
   def initialize(dir: File.join(DEFAULT_DIRECTORY_PATH, DEFAULT_DIRECTORY_NAME))
     @dir = dir 
-    @values = load_values
+  end
+
+  def values
+    @values ||= load_values_from_config_file
   end
 
   def file_path
@@ -25,31 +28,33 @@ class RepositoryConfigStore
   end
 
   class << self
-    def load(path = File.join(RepositoryConfigStore::DEFAULT_DIRECTORY_PATH, RepositoryConfigStore::DEFAULT_DIRECTORY_NAME))
+    def load_from(path = File.join(DEFAULT_DIRECTORY_PATH, DEFAULT_DIRECTORY_NAME))
       exists = File.exist?(path)
 
       raise "no repository found #{path}" unless exists
 
-      new(path)
+      new(dir: path)
     end
   end
 
   private 
-  def load_values
-    yml_values = YAML.load_file(File.join(file_path))
+  def load_values_from_config_file
+    yml = YAML.load_file(File.join(file_path))
 
     RepositoryConfig.new(file_path, yml)
   end
 
   # The repository's configuration values located in the yml file
   class RepositoryConfig
-    attr_reader :name, :description, :mirror, :file_path
+    # FIXME: Need to figure out file path
+    attr_reader :name, :description, :mirror, :file_path, :template_file_path
 
     # Configuration associated with the Mirror
     MirrorConfig = Struct.new(:use_mirror, :path, keyword_init: true)
 
     def initialize(path, opts = {})
       @file_path = path
+      @template_file_path = opts[:template_file_path]
       @name = opts[:name]
       @description = opts[:description]
       @mirror = MirrorConfig.new(opts[:mirror])

@@ -23,6 +23,7 @@ class Repository
   # Initializes a _devlogs repository with the supplied configuration
   #
   def initialize(repo_config)
+    binding.pry
     @config = repo_config
   end
 
@@ -35,8 +36,10 @@ class Repository
 
     entry_file_name = "#{time_prefix}_#{LOG_FILE_SUFFIX}"
 
-    entry_file_path = File.join(@config.path, entry_file_name)
+    # FIXME: Need to figure out file path
+    entry_file_path = File.join(@config.dir, entry_file_name)
 
+    # FIXME: Need to figure out file path
     template = LogTemplate.new(@config.template_file_path)
 
     unless File.exist?(entry_file_path)
@@ -79,7 +82,7 @@ class Repository
   def ls(direction = :desc)
     raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
 
-    Dir.glob(File.join(@config.path, "*_#{DEFAULT_LOG_SUFFIX}")).sort_by do |fpath|
+    Dir.glob(File.join(@config.path, "*_#{LOG_FILE_SUFFIX}")).sort_by do |fpath|
       # The date is joined by two underscores to the suffix
       date, = File.basename(fpath).split("__")
 
@@ -99,7 +102,7 @@ class Repository
     #
     # @returns [Repository]
     #
-    def load(path = File.join(RepositoryConfig::DEFAULT_DIRECTORY_PATH, RepositoryConfig::DEFAULT_DIRECTORY_NAME))
+    def load(path = File.join(RepositoryConfigStore::DEFAULT_DIRECTORY_PATH, RepositoryConfigStore::DEFAULT_DIRECTORY_NAME))
 
       store = RepositoryConfigStore.load_from(path)
 
