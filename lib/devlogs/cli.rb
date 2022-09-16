@@ -5,6 +5,7 @@ require_relative "repository"
 require_relative "editor"
 require_relative "pager"
 require_relative "prompt_utils"
+require_relative "repository_initializer"
 require "thor"
 
 module Devlogs
@@ -33,16 +34,19 @@ module Devlogs
     # Initializes a +devlogs+ repository with a configuration
     #
     desc "init", "Initialize a developer logs for project"
-    method_options force: :boolean, alias: :string
+    method_options force: :boolean
+    method_options dir_path: :string
     def init
       puts "Creating devlogs repository"
 
-      Repository::Initialize.run(
-        { force: options.force? },
-        File.join(".", "_devlogs")
+      RepositoryInitializer.run(
+        { 
+          force: options.force?,
+          dir_path: options.dir_path,
+        },
       )
 
-      puts "Created devlogs"
+      puts "Created devlogs repository"
     end
 
     #
@@ -94,6 +98,7 @@ module Devlogs
     # Helper method for repository loading
     #
     def repo
+      # FIXME: Need to add in path specification here 
       @repo ||= Repository.load
     end
   end
