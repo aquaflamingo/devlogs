@@ -1,14 +1,15 @@
-require 'rsync'
+# frozen_string_literal: true
+
+require "rsync"
 
 # FIXME: Create module
 class Repository
-  # 
+  #
   # SyncManager is an abstraction class for managing any necessity to sync
   # files on the file system using Rsync.
   #
-  class SyncManager 
-
-    # 
+  class SyncManager
+    #
     # @param config_store [Repository::ConfigStore]
     #
     def initialize(config_store)
@@ -20,9 +21,9 @@ class Repository
     # Use trailing slash to avoid sub-directory
     # See rsync manual page
     #
-    # @throws Error if sync fails 
+    # @throws Error if sync fails
     def run
-      dest_path =  @config_store.values.mirror.path
+      dest_path = @config_store.values.mirror.path
       src_path = config_store_path_with_trailing
 
       runner.run("-av", src_path, dest_path) do |result|
@@ -47,7 +48,7 @@ class Repository
       @runner ||= Rsync
     end
 
-    # Depending on the runner (Rsync) program, 
+    # Depending on the runner (Rsync) program,
     # you may need a trailing slash on the directory path
     #
     # @returns [String]

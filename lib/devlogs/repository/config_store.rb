@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "yaml"
 require "rsync"
 
@@ -16,7 +18,7 @@ class Repository
     DEFAULT_DIRECTORY_NAME = ".devlogs"
 
     def initialize(dir: File.join(DEFAULT_DIRECTORY_PATH, DEFAULT_DIRECTORY_NAME))
-      @dir = dir 
+      @dir = dir
     end
 
     def values
@@ -41,7 +43,8 @@ class Repository
       end
     end
 
-    private 
+    private
+
     def load_values_from_config_file
       yml = YAML.load_file(File.join(file_path))
 

@@ -15,8 +15,8 @@ class Repository
   # Example: 11-22-2022_1343
   TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm"
 
-  LOG_FILE_SUFFIX="log.md"
-  ISSUE_FILE_PREFIX="iss"
+  LOG_FILE_SUFFIX = "log.md"
+  ISSUE_FILE_PREFIX = "iss"
 
   VALID_DIRECTION = %i[asc desc].freeze
 
@@ -45,7 +45,7 @@ class Repository
     unless File.exist?(entry_file_path)
       # Add default boiler plate if the file does not exist yet
       File.open(entry_file_path, "w") do |f|
-        f.write template.render 
+        f.write template.render
       end
     end
 
@@ -59,9 +59,7 @@ class Repository
   #
   # @returns nil
   def sync
-    if @repo_config.mirror?
-      sync_manager.run
-    end
+    sync_manager.run if @repo_config.mirror?
   end
 
   # Lists the files in the repository
@@ -89,7 +87,6 @@ class Repository
     # @returns [Repository]
     #
     def load(path = File.join(Repository::ConfigStore::DEFAULT_DIRECTORY_PATH, Repository::ConfigStore::DEFAULT_DIRECTORY_NAME))
-
       store = Repository::ConfigStore.load_from(path)
 
       new(store)
@@ -97,6 +94,7 @@ class Repository
   end
 
   private
+
   def sync_manager
     @sync_manager ||= Repository::SyncManager.new(@config_store)
   end

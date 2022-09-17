@@ -1,4 +1,6 @@
-require_relative 'config_store'
+# frozen_string_literal: true
+
+require_relative "config_store"
 
 # Initialize is an execution object which initializes a Repository on the
 # filesystem
@@ -10,10 +12,10 @@ class Repository
     # Creates a new devlogs repository at the provided path
     def self.run(opts = {})
       new_config = if opts[:dir_path]
-        Repository::ConfigStore.new(dir: opts[:dir_path])
-      else 
-        Repository::ConfigStore.new
-      end
+                     Repository::ConfigStore.new(dir: opts[:dir_path])
+                   else
+                     Repository::ConfigStore.new
+                   end
 
       exists = File.exist?(new_config.file_path)
 
@@ -47,7 +49,7 @@ class Repository
       # Copy the default template file inside the gem into the repository
       default_template_path = get_template_path
 
-      new_config_template_file_path = File.join(new_config.dir, Repository::ConfigStore::TEMPLATE_FILE) 
+      new_config_template_file_path = File.join(new_config.dir, Repository::ConfigStore::TEMPLATE_FILE)
 
       FileUtils.cp(default_template_path, new_config_template_file_path)
     end
@@ -76,7 +78,6 @@ class Repository
       end
     end
 
-    private 
     # Gets the template file path embedded in the gem from the library root
     def self.get_template_path
       File.join(Devlogs.lib_root, "templates", LOG_TEMPLATE_FILE_NAME)

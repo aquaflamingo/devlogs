@@ -1,6 +1,8 @@
-require 'erb'
+# frozen_string_literal: true
 
-# 
+require "erb"
+
+#
 # LogTemplate is a class that represents the rendered log template
 #
 class LogTemplate
@@ -13,7 +15,7 @@ class LogTemplate
     @template_file_path = template_file_path
   end
 
-  # 
+  #
   # Runs the ERB rendering using the provided template file template_file_path
   #
   # @returns [String]
@@ -25,7 +27,7 @@ class LogTemplate
 
   # rubocop:disable
   #
-  # For ERB 
+  # For ERB
   #
   def get_binding
     binding

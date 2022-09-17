@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The repository's configuration values located in the yml file
 class Repository
   class Config
