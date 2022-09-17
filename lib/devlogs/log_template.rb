@@ -1,5 +1,8 @@
 require 'erb'
 
+# 
+# LogTemplate is a class that represents the rendered log template
+#
 class LogTemplate
   attr_reader :time
 
@@ -10,12 +13,20 @@ class LogTemplate
     @template_file_path = template_file_path
   end
 
-  def build
+  # 
+  # Runs the ERB rendering using the provided template file template_file_path
+  #
+  # @returns [String]
+  #
+  def render
     erb = ERB.new(File.read(@template_file_path))
     erb.result(get_binding)
   end
 
   # rubocop:disable
+  #
+  # For ERB 
+  #
   def get_binding
     binding
   end
