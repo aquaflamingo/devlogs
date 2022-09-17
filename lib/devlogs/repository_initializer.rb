@@ -6,26 +6,26 @@ class RepositoryInitializer
   # Creates a new devlogs repository at the provided path
   def self.run(opts = {})
 
-    config = if opts[:dir_path]
+    new_config = if opts[:dir_path]
       RepositoryConfigStore.new(dir: opts[:dir_path])
     else 
       RepositoryConfigStore.new
     end
 
-    exists = File.exist?(config.file_path)
+    exists = File.exist?(new_config.file_path)
 
     if exists && !opts[:force]
-      puts "Log repository already exists in #{config.file_path}. Aborting..."
+      puts "Log repository already exists in #{new_config.file_path}. Aborting..."
       raise RuntimeError
     end
 
     results = prompt_for_info
 
-    # Create the config directory
-    FileUtils.mkdir_p(config.dir)
+    # Create the new_config directory
+    FileUtils.mkdir_p(new_config.dir)
 
-    # Create config file
-    File.open(config.file_path, "w") do |f|
+    # Create new_config file
+    File.open(new_config.file_path, "w") do |f|
       f.write results.to_yaml
     end
 
@@ -34,7 +34,7 @@ class RepositoryInitializer
   
     # Create the info file
     info_file_name = "#{sanitized_project_name}_devlogs.info.md"
-    info_file = File.join(config.dir, info_file_name)
+    info_file = File.join(new_config.dir, info_file_name)
 
     File.open(info_file, "w") do |f|
       f.puts "# #{results[:name]}"
@@ -44,10 +44,9 @@ class RepositoryInitializer
     # Copy the default template file inside the gem into the repository
     default_template_path = File.join(__dir__, "templates", "__log_template.erb.md")
 
-    # FIXME 
-    File.join(@config.dir, RepositoryConfigStore::TEMPLATE_FILE) 
+    template_path = File.join(new_config.dir, RepositoryConfigStore::TEMPLATE_FILE) 
 
-    FileUtils.cp(default_template_path)
+    FileUtils.cp(default_template_path, template_path)
   end
 
   # Creates an interactive prompt for user input

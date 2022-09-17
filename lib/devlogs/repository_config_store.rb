@@ -1,6 +1,7 @@
 require "yaml"
+require "rsync"
 
-# A per project / repository configuration storage directory
+# A per repository configuration storage directory
 class RepositoryConfigStore
   attr_reader :dir, :values
 
@@ -76,5 +77,4 @@ class RepositoryConfigStore
       end
     end
   end
-
 end

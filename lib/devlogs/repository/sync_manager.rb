@@ -1,6 +1,7 @@
 require 'rsync'
 
-module Repository
+# FIXME: Create module
+class Repository
   # 
   # SyncManager is an abstraction class for managing any necessity to sync
   # files on the file system using Rsync.
@@ -24,7 +25,7 @@ module Repository
       dest_path =  @config_store.values.mirror.path
       src_path = config_store_path_with_trailing
 
-      @runner.run("-av", src_path, dest_path) do |result|
+      runner.run("-av", src_path, dest_path) do |result|
         if result.success?
           puts "Mirror sync complete."
           result.changes.each do |change|

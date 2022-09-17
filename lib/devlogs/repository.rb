@@ -2,12 +2,12 @@
 
 require "fileutils"
 require "tty-prompt"
-require "rsync"
 require "pry"
 require "time"
 
 require_relative "repository_config_store"
 require_relative "editor"
+require_relative "repository/sync_manager"
 require_relative "log_template"
 
 # Repostiroy is an accessor object for the devlogs directory
@@ -22,9 +22,9 @@ class Repository
 
   # Initializes a _devlogs repository with the supplied configuration
   #
-  def initialize(repo_config)
-    binding.pry
-    @config = repo_config
+  def initialize(repo_config_store)
+    @config_store = repo_config_store
+    @repo_config = @config_store.values
   end
 
   # Creates a new _devlogs entry for recording session completion
@@ -37,10 +37,10 @@ class Repository
     entry_file_name = "#{time_prefix}_#{LOG_FILE_SUFFIX}"
 
     # FIXME: Need to figure out file path
-    entry_file_path = File.join(@config.dir, entry_file_name)
+    entry_file_path = File.join(@config_store.dir, entry_file_name)
 
     # FIXME: Need to figure out file path
-    template = LogTemplate.new(@config.template_file_path)
+    template = LogTemplate.new(@config_store.template_file_path)
 
     unless File.exist?(entry_file_path)
       # Add default boiler plate if the file does not exist yet
@@ -59,22 +59,8 @@ class Repository
   #
   # @returns nil
   def sync
-    if @config.mirror?
-      # Run rsync with -a to copy directories recursively
-
-      # Use trailing slash to avoid sub-directory
-      # See rsync manual page
-
-      Rsync.run("-av", @config.path(with_trailing: true), @config.mirror.path) do |result|
-        if result.success?
-          puts "Mirror sync complete."
-          result.changes.each do |change|
-            puts "#{change.filename} (#{change.summary})"
-          end
-        else
-          raise "Failed to sync: #{result.error}"
-        end
-      end
+    if @repo_config.mirror?
+      sync_manager.run
     end
   end
 
@@ -82,7 +68,7 @@ class Repository
   def ls(direction = :desc)
     raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
 
-    Dir.glob(File.join(@config.path, "*_#{LOG_FILE_SUFFIX}")).sort_by do |fpath|
+    Dir.glob(File.join(@config_store.dir, "*_#{LOG_FILE_SUFFIX}")).sort_by do |fpath|
       # The date is joined by two underscores to the suffix
       date, = File.basename(fpath).split("__")
 
@@ -106,7 +92,12 @@ class Repository
 
       store = RepositoryConfigStore.load_from(path)
 
-      new(store.values)
+      new(store)
     end
+  end
+
+  private
+  def sync_manager
+    @sync_manager ||= Repository::SyncManager.new(@config_store)
   end
 end
