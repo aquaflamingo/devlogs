@@ -28,7 +28,7 @@ Inside your project initialize the `.devlogs` repository:
 $ devlogs init
 ```
 
-Follow the prompts to setup the project configuration located in `.devlogs/.devlogs.config`. 
+Follow the prompts to setup the project configuration located in the _default_ `.devlogs/.devlogs.config`. (You can optionally set where you want to initialize the repository via --dirpath)
 
 You can setup a mirror directory path in the configuration stage to sync changes to another directory on your machine, for example to Obsidian.md.
 
