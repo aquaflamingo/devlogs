@@ -5,6 +5,7 @@ require_relative "repository"
 require_relative "editor"
 require_relative "pager"
 require_relative "prompt_utils"
+require_relative "repository/initializer"
 require "thor"
 
 module Devlogs
@@ -33,16 +34,19 @@ module Devlogs
     # Initializes a +devlogs+ repository with a configuration
     #
     desc "init", "Initialize a developer logs for project"
-    method_options force: :boolean, alias: :string
+    method_options force: :boolean
+    method_options dirpath: :string
     def init
       puts "Creating devlogs repository"
 
-      Repository::Initialize.run(
-        { force: options.force? },
-        File.join(".", "_devlogs")
+      Repository::Initializer.run(
+        { 
+          force: options.force?,
+          dirpath: options.dirpath,
+        },
       )
 
-      puts "Created devlogs"
+      puts "Created devlogs repository"
     end
 
     #
@@ -64,8 +68,8 @@ module Devlogs
     # Creates a devlogs entry in the repository and syncs changes
     # to the mirrored directory if set
     #
-    desc "entry", "Create a new devlogs entry" # [4]
-    def entry
+    desc "new", "Create a new devlogs entry" # [4]
+    def new
       puts "Creating new entry..."
       repo.create
 
@@ -78,6 +82,11 @@ module Devlogs
     desc "ls", "Lists the repository logs and allows you to select"
     def ls
       entries = repo.ls
+
+      if entries.size < 1 
+        puts "No logs present in this repository"
+        exit 0
+      end
 
       # Use the file names as visible keys for the prompt
       entry_names = entries.map { |e| File.basename(e) }
@@ -94,6 +103,7 @@ module Devlogs
     # Helper method for repository loading
     #
     def repo
+      # FIXME: Need to add in path specification here 
       @repo ||= Repository.load
     end
   end
