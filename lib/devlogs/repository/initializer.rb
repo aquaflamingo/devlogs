@@ -11,8 +11,8 @@ class Repository
 
     # Creates a new devlogs repository at the provided path
     def self.run(opts = {})
-      new_config = if opts[:dir_path]
-                     Repository::ConfigStore.new(dir: opts[:dir_path])
+      new_config = if opts[:dirpath]
+                     Repository::ConfigStore.new(dir: opts[:dirpath])
                    else
                      Repository::ConfigStore.new
                    end

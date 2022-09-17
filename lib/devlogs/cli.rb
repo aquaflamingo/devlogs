@@ -35,15 +35,15 @@ module Devlogs
     #
     desc "init", "Initialize a developer logs for project"
     method_options force: :boolean
-    method_options dir_path: :string
+    method_options dirpath: :string
     def init
       puts "Creating devlogs repository"
 
       Repository::Initializer.run(
-        {
+        { 
           force: options.force?,
-          dir_path: options.dir_path
-        }
+          dirpath: options.dirpath,
+        },
       )
 
       puts "Created devlogs repository"
@@ -83,7 +83,7 @@ module Devlogs
     def ls
       entries = repo.ls
 
-      if entries.empty?
+      if entries.size < 1 
         puts "No logs present in this repository"
         exit 0
       end
@@ -103,7 +103,7 @@ module Devlogs
     # Helper method for repository loading
     #
     def repo
-      # FIXME: Need to add in path specification here
+      # FIXME: Need to add in path specification here 
       @repo ||= Repository.load
     end
   end
