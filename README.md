@@ -23,12 +23,12 @@ Or install it yourself as:
 
 ## Usage
 ### Initialize
-Inside your project initialize the `_devlogs` repository:
+Inside your project initialize the `.devlogs` repository:
 ```bash
 $ devlogs init
 ```
 
-Follow the prompts to setup the project configuration located in `_devlogs/.devlogs.config`. 
+Follow the prompts to setup the project configuration located in `.devlogs/.devlogs.config`. 
 
 You can setup a mirror directory path in the configuration stage to sync changes to another directory on your machine, for example to Obsidian.md.
 
@@ -36,7 +36,7 @@ Example:
 
 ```
 myproject
- _devlogs
+ .devlogs
    >> content
 ```
 
@@ -48,10 +48,10 @@ obsidianvault
 ```
 
 ### Creating entries
-Once you are done for the day or session run the `entry` command:
+Once you are done for the day or session run the `new` command:
 
 ```bash
-devlogs entry
+devlogs new
 ```
 
 Your editor will pop up and you can fill in cliff notes.
@@ -72,8 +72,6 @@ You can use the `last` command to retrieve the most recent entry
 ```bash
 devlogs last
 ```
-
-The `--open` command will cause the entry to be opened in a new default editor.
 
 ## Development
 
