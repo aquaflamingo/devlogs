@@ -9,7 +9,7 @@ class Repository
   class SyncManager 
 
     # 
-    # @param config_store [RepositoryConfigStore]
+    # @param config_store [Repository::ConfigStore]
     #
     def initialize(config_store)
       @config_store = config_store

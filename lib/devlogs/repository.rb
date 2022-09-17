@@ -5,7 +5,7 @@ require "tty-prompt"
 require "pry"
 require "time"
 
-require_relative "repository_config_store"
+require_relative "repository/config_store"
 require_relative "editor"
 require_relative "repository/sync_manager"
 require_relative "log_template"
@@ -20,14 +20,14 @@ class Repository
 
   VALID_DIRECTION = %i[asc desc].freeze
 
-  # Initializes a _devlogs repository with the supplied configuration
+  # Initializes a .devlogs repository with the supplied configuration
   #
   def initialize(repo_config_store)
     @config_store = repo_config_store
     @repo_config = @config_store.values
   end
 
-  # Creates a new _devlogs entry for recording session completion
+  # Creates a new .devlogs entry for recording session completion
   #
   # @returns nil
   def create
@@ -88,9 +88,9 @@ class Repository
     #
     # @returns [Repository]
     #
-    def load(path = File.join(RepositoryConfigStore::DEFAULT_DIRECTORY_PATH, RepositoryConfigStore::DEFAULT_DIRECTORY_NAME))
+    def load(path = File.join(Repository::ConfigStore::DEFAULT_DIRECTORY_PATH, Repository::ConfigStore::DEFAULT_DIRECTORY_NAME))
 
-      store = RepositoryConfigStore.load_from(path)
+      store = Repository::ConfigStore.load_from(path)
 
       new(store)
     end

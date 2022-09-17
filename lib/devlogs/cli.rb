@@ -5,7 +5,7 @@ require_relative "repository"
 require_relative "editor"
 require_relative "pager"
 require_relative "prompt_utils"
-require_relative "repository_initializer"
+require_relative "repository/initializer"
 require "thor"
 
 module Devlogs
@@ -39,7 +39,7 @@ module Devlogs
     def init
       puts "Creating devlogs repository"
 
-      RepositoryInitializer.run(
+      Repository::Initializer.run(
         { 
           force: options.force?,
           dir_path: options.dir_path,
