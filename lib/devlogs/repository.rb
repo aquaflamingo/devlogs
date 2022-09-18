@@ -8,17 +8,13 @@ require "time"
 require_relative "repository/config_store"
 require_relative "editor"
 require_relative "repository/sync_manager"
-require_relative "log_template"
+require_relative "helper/time_helper"
+require_relative "log_manager"
+require_relative "issue_manager"
 
-# Repostiroy is an accessor object for the devlogs directory
+# Repository is an accessor object for the devlogs directory
 class Repository
-  # Example: 11-22-2022_1343
-  TIME_FORMAT_FILE_PREFIX = "%m-%d-%Y__%kh%Mm"
-
-  LOG_FILE_SUFFIX = "log.md"
-  ISSUE_FILE_PREFIX = "iss"
-
-  VALID_DIRECTION = %i[asc desc].freeze
+  include TimeHelper
 
   # Initializes a .devlogs repository with the supplied configuration
   #
@@ -31,23 +27,7 @@ class Repository
   #
   # @returns nil
   def create
-    time = Time.new
-    time_prefix = time.strftime(TIME_FORMAT_FILE_PREFIX)
-
-    entry_file_name = "#{time_prefix}_#{LOG_FILE_SUFFIX}"
-
-    # FIXME: Need to figure out file path
-    entry_file_path = File.join(@config_store.dir, entry_file_name)
-
-    # FIXME: Need to figure out file path
-    template = LogTemplate.new(@config_store.template_file_path)
-
-    unless File.exist?(entry_file_path)
-      # Add default boiler plate if the file does not exist yet
-      File.open(entry_file_path, "w") do |f|
-        f.write template.render
-      end
-    end
+    entry_file_path = log_manager.create_entry 
 
     Editor.open(entry_file_path)
 
@@ -64,21 +44,7 @@ class Repository
 
   # Lists the files in the repository
   def ls(direction = :desc)
-    raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
-
-    Dir.glob(File.join(@config_store.dir, "*_#{LOG_FILE_SUFFIX}")).sort_by do |fpath|
-      # The date is joined by two underscores to the suffix
-      date, = File.basename(fpath).split("__")
-
-      time_ms = Time.strptime(date, "%m-%d-%Y").to_i
-
-      # Descending
-      if direction == :asc
-        time_ms
-      else
-        -time_ms
-      end
-    end
+    log_manager.list_entries(direction)
   end
 
   class << self
@@ -97,5 +63,13 @@ class Repository
 
   def sync_manager
     @sync_manager ||= Repository::SyncManager.new(@config_store)
+  end
+
+  def log_manager
+    @log_manager ||= LogManager.new(@config_store)
+  end
+
+  def issue_manager
+    @issue_manager ||= IssueManager.new(@config_store)
   end
 end
