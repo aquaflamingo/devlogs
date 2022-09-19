@@ -96,7 +96,6 @@ module Devlogs
     def ls_issues
       issues = repo.ls_issues
 
-      binding.pry
       if issues.empty?
         puts "No issues present in this repository"
         exit 0
