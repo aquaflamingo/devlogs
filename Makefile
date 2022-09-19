@@ -9,6 +9,9 @@ setup:
 install:
 	@bundle exec rake install
 
+build:
+	@bundle exec rake build
+
 release:
 	@bundle exec rake release
 
