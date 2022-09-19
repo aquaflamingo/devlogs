@@ -7,7 +7,7 @@ Links:
 # <%= title %>
 
 ## Problem
-<%= description.join('\n') %>
+<%= description %>
 
 ## Reproduction Steps
-<%= reproduction.join('\n') %>
+<%= reproduction %>
