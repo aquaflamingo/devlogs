@@ -4,7 +4,7 @@
 class Repository
   class Config
     # FIXME: Need to figure out file path
-    attr_reader :name, :description, :mirror, :file_path, :template_file_path
+    attr_reader :name, :description, :mirror, :file_path, :template_file_path, :short_code
 
     # Configuration associated with the Mirror
     MirrorConfig = Struct.new(:use_mirror, :path, keyword_init: true)
@@ -13,6 +13,7 @@ class Repository
       @file_path = path
       @template_file_path = opts[:template_file_path]
       @name = opts[:name]
+      @short_code = opts[:short_code]
       @description = opts[:description]
       @mirror = MirrorConfig.new(opts[:mirror])
     end
