@@ -8,7 +8,7 @@ require_relative "config"
 # A per repository configuration storage directory
 class Repository
   class ConfigStore
-    attr_reader :dir, :values
+    attr_reader :dir
 
     CONFIG_FILE = ".devlogs.config.yml"
     DATA_FILE = ".devlogs.data.yml"

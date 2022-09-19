@@ -9,8 +9,8 @@ require_relative "repository/config_store"
 require_relative "editor"
 require_relative "repository/sync_manager"
 require_relative "helper/time_helper"
-require_relative "log_manager"
-require_relative "issue_manager"
+require_relative "repository/log_manager"
+require_relative "repository/issue_manager"
 
 # Repository is an accessor object for the devlogs directory
 class Repository

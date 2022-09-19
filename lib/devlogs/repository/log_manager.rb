@@ -1,5 +1,5 @@
-require_relative 'helper/time_helper'
-require_relative "erb_template"
+require_relative '../helper/time_helper'
+require_relative "../render/log_template_renderer"
 
 class LogManager
   include TimeHelper
@@ -44,7 +44,7 @@ class LogManager
 
     entry_file_path = File.join(@config_store.dir, entry_file_name)
 
-    template = LogTemplate.new(@config_store.template_file_path)
+    template = LogTemplateRenderer.new(@config_store.template_file_path)
 
     unless File.exist?(entry_file_path)
       # Add default boiler plate if the file does not exist yet
