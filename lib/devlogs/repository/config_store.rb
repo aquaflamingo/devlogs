@@ -94,6 +94,7 @@ class Repository
     end
   end
 
+  # FIXME: pull out into new class
   class ConfigBuilder
     def initialize(dirpath)
       @config_store = if dirpath
@@ -170,6 +171,8 @@ class Repository
         save_config_file
         save_info_file
         save_log_template_file
+
+        create_issue_dir
         save_issue_template_file
         save_data_file
       end
@@ -181,6 +184,14 @@ class Repository
       def create_config_store_dir
         # Create the draft_config directory
         FileUtils.mkdir_p(@config_store.dir)
+      end
+
+      # 
+      # Creates the issue directory
+      #
+      def create_issue_dir
+        # Create the draft_config directory
+        FileUtils.mkdir_p(@config_store.issue_dir_path)
       end
 
       # 

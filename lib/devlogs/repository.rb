@@ -34,6 +34,16 @@ class Repository
     puts "Writing entry to #{entry_file_path}.."
   end
 
+  #
+  # @returns nil
+  def create_issue
+    issue_file_path = issue_manager.create
+
+    Editor.open(issue_file_path)
+
+    puts "Writing issue to #{issue_file_path}.."
+  end
+
   # Syncs the directory changes to the (optional) mirror repository
   # specified in the configuration.
   #
