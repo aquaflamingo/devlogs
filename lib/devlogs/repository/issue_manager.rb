@@ -8,6 +8,9 @@ class IssueManager
 
   VALID_DIRECTION = %i[asc desc].freeze
 
+  # 
+  # @param [Repository::ConfigStore]
+  #
   def initialize(repo_config_store)
     @config_store = repo_config_store
   end
@@ -25,10 +28,13 @@ class IssueManager
     #
     short_code_pattern = "#{config_values.short_code}-*"
 
+    # 
+    # pattern: RLP-*
+    #
     glob_pattern = File.join(@config_store.dir, short_code_pattern)
 
-    Dir.glob(glob_pattern).sort_by do |fpath|
 
+    Dir.glob(glob_pattern).sort_by do |fpath|
       # i.e. RLP-1
       issue_tag, = File.basename(fpath).split(short_code_pattern)
 
