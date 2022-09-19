@@ -17,7 +17,30 @@ class IssueManager
   # @param direction [Symbol] ascending or descending 
   #
   def list(direction = :desc)
-    raise NotImplementedError
+    raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
+  
+    # Anything with the _issue.md suffix
+    #
+    # i.e. RLP-1, RLP-2, et cetera
+    #
+    short_code_pattern = "#{config_values.short_code}-*"
+
+    glob_pattern = File.join(@config_store.dir, short_code_pattern)
+
+    Dir.glob(glob_pattern).sort_by do |fpath|
+
+      # i.e. RLP-1
+      issue_tag, = File.basename(fpath).split(short_code_pattern)
+
+      # i.e. [RLP, 1]
+      issue_num = issue_tag.split('-')
+
+      if direction == :asc
+        issue_num
+      else
+        -issue_num
+      end
+    end
   end
 
   # 
