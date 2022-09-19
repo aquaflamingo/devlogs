@@ -1,8 +1,10 @@
-require_relative 'erb_template_renderer'
+# frozen_string_literal: true
+
+require_relative "erb_template_renderer"
 
 #
-# IssueTemplateRenderer captures issue information and 
-# renders it within a given ERB template 
+# IssueTemplateRenderer captures issue information and
+# renders it within a given ERB template
 #
 class IssueTemplateRenderer < ErbTemplateRenderer
   attr_reader :title, :description, :reproduction

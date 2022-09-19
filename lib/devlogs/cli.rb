@@ -40,10 +40,10 @@ module Devlogs
       puts "Creating devlogs repository"
 
       Repository::Initializer.run(
-        { 
+        {
           force: options.force?,
-          dirpath: options.dirpath,
-        },
+          dirpath: options.dirpath
+        }
       )
 
       puts "Created devlogs repository"
@@ -119,7 +119,7 @@ module Devlogs
     def ls
       entries = repo.ls
 
-      if entries.size < 1 
+      if entries.empty?
         puts "No logs present in this repository"
         exit 0
       end
@@ -139,7 +139,7 @@ module Devlogs
     # Helper method for repository loading
     #
     def repo
-      # FIXME: Need to add in path specification here 
+      # FIXME: Need to add in path specification here
       @repo ||= Repository.load
     end
   end

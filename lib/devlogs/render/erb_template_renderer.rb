@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require "erb"
 
 #
-# ErbTemplateRenderer is a base class for rendering arbitrary 
+# ErbTemplateRenderer is a base class for rendering arbitrary
 # ERB templates.
 #
 class ErbTemplateRenderer

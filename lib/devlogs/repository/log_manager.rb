@@ -1,4 +1,6 @@
-require_relative '../helper/time_helper'
+# frozen_string_literal: true
+
+require_relative "../helper/time_helper"
 require_relative "../render/log_template_renderer"
 
 class LogManager
@@ -10,9 +12,9 @@ class LogManager
     @config_store = repo_config_store
   end
 
-  # Lists the log entries present in the repository 
+  # Lists the log entries present in the repository
   #
-  # @param direction [Symbol] ascending or descending 
+  # @param direction [Symbol] ascending or descending
   #
   def list(direction = :desc)
     raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
@@ -34,8 +36,8 @@ class LogManager
     end
   end
 
-  # 
-  # Adds a new entry to the repository 
+  #
+  # Adds a new entry to the repository
   #
   # @returns [String] entry file path
   #

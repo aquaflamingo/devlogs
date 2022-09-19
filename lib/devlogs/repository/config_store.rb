@@ -28,7 +28,7 @@ class Repository
     end
 
     #
-    # Retrieves the data file 
+    # Retrieves the data file
     #
     # @returns [String]
     #
@@ -36,26 +36,26 @@ class Repository
       File.join(@dir, DATA_FILE)
     end
 
-    # 
+    #
     # Retrieves .devlogs.config.yml file path
     #
-    # @returns [String] 
+    # @returns [String]
     #
     def file_path
       File.join(@dir, CONFIG_FILE)
     end
 
-    # 
+    #
     # The template File
     #
-    # @returns [String] 
+    # @returns [String]
     # FIXME: rename to log_template_file_path
     def template_file_path
       File.join(@dir, LOG_TEMPLATE_FILE)
     end
 
     #
-    # The issue template file path: 
+    # The issue template file path:
     #
     # @returns [String]
     #
@@ -63,10 +63,10 @@ class Repository
       File.join(@dir, ISSUE_TEMPLATE_FILE)
     end
 
-    # 
+    #
     # Issue directory path
     #
-    # @returns [String] 
+    # @returns [String]
     #
     def issue_dir_path
       File.join(@dir, ISSUE_DIR)
@@ -98,10 +98,10 @@ class Repository
   class ConfigBuilder
     def initialize(dirpath)
       @config_store = if dirpath
-        Repository::ConfigStore.new(dir: dirpath)
-      else
-        Repository::ConfigStore.new
-      end
+                        Repository::ConfigStore.new(dir: dirpath)
+                      else
+                        Repository::ConfigStore.new
+                      end
     end
 
     def build
@@ -111,6 +111,7 @@ class Repository
     end
 
     private
+
     # Creates an interactive prompt for user input
     #
     # @returns [Hash]
@@ -150,11 +151,11 @@ class Repository
       ISSUE_TEMPLATE_FILE_NAME = "__issue_template.erb.md"
 
       def initialize(config_store, config_info)
-        @config_store =config_store
+        @config_store = config_store
         @config_info = config_info
       end
 
-      # 
+      #
       # Initiates the write process of devlogs repository
       #
       # @param force [Boolean]
@@ -178,7 +179,8 @@ class Repository
       end
 
       private
-      # 
+
+      #
       # Creates the configuration store directory
       #
       def create_config_store_dir
@@ -186,7 +188,7 @@ class Repository
         FileUtils.mkdir_p(@config_store.dir)
       end
 
-      # 
+      #
       # Creates the issue directory
       #
       def create_issue_dir
@@ -194,7 +196,7 @@ class Repository
         FileUtils.mkdir_p(@config_store.issue_dir_path)
       end
 
-      # 
+      #
       # Saves the .devlogs.config.yml file
       #
       def save_config_file
@@ -204,7 +206,7 @@ class Repository
         end
       end
 
-      # 
+      #
       # Saves the .info file
       #
       def save_info_file
@@ -222,7 +224,7 @@ class Repository
       end
 
       #
-      # Copies the log template to the config store directory 
+      # Copies the log template to the config store directory
       #
       def save_log_template_file
         # Copy the default template file inside the gem into the repository
@@ -234,7 +236,7 @@ class Repository
       end
 
       #
-      # Copies the log template to the config store directory 
+      # Copies the log template to the config store directory
       #
       def save_issue_template_file
         default_iss_template_path = get_template_path(ISSUE_TEMPLATE_FILE_NAME)
@@ -244,8 +246,8 @@ class Repository
         FileUtils.cp(default_iss_template_path, draft_config_iss_template_file_path)
       end
 
-      # 
-      # Creates a .devlogs.data.yml file 
+      #
+      # Creates a .devlogs.data.yml file
       #
       def save_data_file
         data_file = File.join(@config_store.dir, Repository::ConfigStore::DATA_FILE)
@@ -262,8 +264,6 @@ class Repository
           f.puts data_info.to_yaml
         end
       end
-
-      private
 
       # Gets the template file path embedded in the gem from the library root
       #
