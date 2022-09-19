@@ -4,7 +4,7 @@ require_relative "version"
 require_relative "repository"
 require_relative "editor"
 require_relative "pager"
-require_relative "prompt_utils"
+require_relative "helper/tty_prompt_helper"
 require_relative "repository/initializer"
 require "thor"
 
@@ -13,7 +13,7 @@ module Devlogs
   # The CLI devlogs CLI
   #
   class CLI < Thor
-    include PromptUtils
+    include TTYPromptHelper
 
     package_name "devlogs"
 
