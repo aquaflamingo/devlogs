@@ -14,7 +14,7 @@ class LogManager
   #
   # @param direction [Symbol] ascending or descending 
   #
-  def list_entries(direction = :desc)
+  def list(direction = :desc)
     raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
 
     # Anything with the _log.md suffix
@@ -39,7 +39,7 @@ class LogManager
   #
   # @returns [String] entry file path
   #
-  def create_entry
+  def create
     entry_file_name = "#{current_time}_#{LOG_FILE_SUFFIX}"
 
     entry_file_path = File.join(@config_store.dir, entry_file_name)
