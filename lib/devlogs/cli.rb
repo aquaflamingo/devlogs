@@ -4,7 +4,7 @@ require_relative "version"
 require_relative "repository"
 require_relative "editor"
 require_relative "pager"
-require_relative "prompt_utils"
+require_relative "helper/tty_prompt_helper"
 require_relative "repository/initializer"
 require "thor"
 
@@ -13,7 +13,7 @@ module Devlogs
   # The CLI devlogs CLI
   #
   class CLI < Thor
-    include PromptUtils
+    include TTYPromptHelper
 
     package_name "devlogs"
 
@@ -40,10 +40,10 @@ module Devlogs
       puts "Creating devlogs repository"
 
       Repository::Initializer.run(
-        { 
+        {
           force: options.force?,
-          dirpath: options.dirpath,
-        },
+          dirpath: options.dirpath
+        }
       )
 
       puts "Created devlogs repository"
@@ -64,6 +64,8 @@ module Devlogs
         puts File.read(last_entry)
       end
     end
+
+    # FIXME: Add logs sub command
     #
     # Creates a devlogs entry in the repository and syncs changes
     # to the mirrored directory if set
@@ -76,6 +78,39 @@ module Devlogs
       repo.sync
     end
 
+    # FIXME: Add logs sub command
+    #
+    # Creates a devlogs entry in the repository and syncs changes
+    # to the mirrored directory if set
+    #
+    desc "new_issue", "Create a new devlogs entry" # [4]
+    def new_issue
+      repo.create_issue
+      repo.sync
+    end
+
+    #
+    # Lists repository issues
+    #
+    desc "ls_issues", "Lists the repository issues and allows you to select"
+    def ls_issues
+      issues = repo.ls_issues
+
+      if issues.empty?
+        puts "No issues present in this repository"
+        exit 0
+      end
+
+      # Use the file names as visible keys for the prompt
+      issue_names = issues.map { |e| File.basename(e) }
+
+      # Build the TTY:Prompt
+      result = build_select_prompt(data: issue_names, text: "Select an issue issue...")
+
+      # Open in paging program
+      Pager.open(issues[result])
+    end
+
     #
     # Lists repository logs
     #
@@ -83,7 +118,7 @@ module Devlogs
     def ls
       entries = repo.ls
 
-      if entries.size < 1 
+      if entries.empty?
         puts "No logs present in this repository"
         exit 0
       end
@@ -103,7 +138,7 @@ module Devlogs
     # Helper method for repository loading
     #
     def repo
-      # FIXME: Need to add in path specification here 
+      # FIXME: Need to add in path specification here
       @repo ||= Repository.load
     end
   end

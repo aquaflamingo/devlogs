@@ -3,9 +3,10 @@
 require "erb"
 
 #
-# LogTemplate is a class that represents the rendered log template
+# ErbTemplateRenderer is a base class for rendering arbitrary
+# ERB templates.
 #
-class LogTemplate
+class ErbTemplateRenderer
   attr_reader :time
 
   TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M"

@@ -5,7 +5,7 @@ require "tty-prompt"
 #
 # Utility module for tty-prompt library
 #
-module PromptUtils
+module TTYPromptHelper
   #
   # Builds a basic select prompt using the provided data
   #
@@ -20,6 +20,12 @@ module PromptUtils
       data.each_with_index do |d, index|
         menu.choice d, index
       end
+    end
+  end
+
+  module Validator
+    def self.length_range(min: 0, max: 99)
+      ->(input) { input.size > min && input.size <= max }
     end
   end
 end
