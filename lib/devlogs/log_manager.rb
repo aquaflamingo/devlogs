@@ -44,7 +44,7 @@ class LogManager
 
     entry_file_path = File.join(@config_store.dir, entry_file_name)
 
-    template = ErbTemplate.new(@config_store.template_file_path)
+    template = LogTemplate.new(@config_store.template_file_path)
 
     unless File.exist?(entry_file_path)
       # Add default boiler plate if the file does not exist yet
