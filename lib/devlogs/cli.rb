@@ -64,6 +64,8 @@ module Devlogs
         puts File.read(last_entry)
       end
     end
+
+    # FIXME: Add logs sub command
     #
     # Creates a devlogs entry in the repository and syncs changes
     # to the mirrored directory if set
@@ -73,6 +75,17 @@ module Devlogs
       puts "Creating new entry..."
       repo.create
 
+      repo.sync
+    end
+
+    # FIXME: Add logs sub command
+    #
+    # Creates a devlogs entry in the repository and syncs changes
+    # to the mirrored directory if set
+    #
+    desc "new_issue", "Create a new devlogs entry" # [4]
+    def new_issue
+      repo.create_issue
       repo.sync
     end
 
