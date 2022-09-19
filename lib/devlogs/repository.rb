@@ -54,7 +54,12 @@ class Repository
 
   # Lists the files in the repository
   def ls(direction = :desc)
-    log_manager.list_entries(direction)
+    log_manager.list(direction)
+  end
+
+  # Lists the issues in the repository
+  def ls_issues(direction = :desc)
+    issue_manager.list(direction)
   end
 
   class << self

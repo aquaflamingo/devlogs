@@ -7,6 +7,7 @@ class IssueManager
   include TimeHelper
 
   VALID_DIRECTION = %i[asc desc].freeze
+  ISSUE_SEPARATOR = "__".freeze
 
   # 
   # @param [Repository::ConfigStore]
@@ -15,6 +16,7 @@ class IssueManager
     @config_store = repo_config_store
   end
 
+  #
   # Lists the issue entries present in the repository 
   #
   # @param direction [Symbol] ascending or descending 
@@ -31,20 +33,20 @@ class IssueManager
     # 
     # pattern: RLP-*
     #
-    glob_pattern = File.join(@config_store.dir, short_code_pattern)
-
+    glob_pattern = File.join(@config_store.issue_dir_path, short_code_pattern)
 
     Dir.glob(glob_pattern).sort_by do |fpath|
-      # i.e. RLP-1
-      issue_tag, = File.basename(fpath).split(short_code_pattern)
+      
+      # i.e. [RLP-1, title_of_issue.md]
+      issue_tag, = File.basename(fpath).split(ISSUE_SEPARATOR)
 
       # i.e. [RLP, 1]
-      issue_num = issue_tag.split('-')
+      _, issue_num = issue_tag.split('-')
 
       if direction == :asc
-        issue_num
+        issue_num.to_i
       else
-        -issue_num
+        -1 * issue_num.to_i
       end
     end
   end
@@ -91,7 +93,7 @@ class IssueManager
     #rlp_1__user_validation_fails.md
     file_name_title = snakify(info[:title])
 
-    issue_file_name = "#{short_code_issue}__#{file_name_title}.md".downcase
+    issue_file_name = "#{short_code_issue}#{ISSUE_SEPARATOR}#{file_name_title}.md".downcase
 
     {
       display_title: display_title,
@@ -142,7 +144,11 @@ class IssueManager
   end
 
   # Transforms a string with spaces or hyphens to 
-  # an snake case string
+  # an snake case String
+  #
+  # @param input [String]
+  # @returns [String]
+  #
   def snakify(input)
     input.gsub(/[ -]/,"_").downcase
   end
