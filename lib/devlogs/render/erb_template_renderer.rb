@@ -1,10 +1,10 @@
-# frozen_string_literal: true
 require "erb"
 
 #
-# ErbTemplate is a class that represents the rendered template
+# ErbTemplateRenderer is a base class for rendering arbitrary 
+# ERB templates.
 #
-class ErbTemplate
+class ErbTemplateRenderer
   attr_reader :time
 
   TIME_FORMAT_TEXT_ENTRY = "%m-%d-%Y %k:%M"
@@ -30,23 +30,5 @@ class ErbTemplate
   #
   def get_binding
     binding
-  end
-end
-
-
-# TODO: Move to templates folder
-class LogTemplate < ErbTemplate 
-end
-
-# TODO: Move to templates folder
-class IssueTemplate < ErbTemplate
-  attr_reader :title, :description, :reproduction
-
-  def initialize(template_file_path, info = {})
-    super(template_file_path)
-
-    @title = info[:title]
-    @description = info[:description]
-    @reproduction = info[:reproduction]
   end
 end
