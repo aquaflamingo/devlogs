@@ -4,6 +4,10 @@ require_relative "../helper/time_helper"
 require_relative "../helper/tty_prompt_helper"
 require_relative "../render/issue_template_renderer"
 
+#
+# IssueManager is an abstraction class to orchestrate the internals
+# of issue management and creation for a repository
+#
 class IssueManager
   include TTYPromptHelper
   include TimeHelper
@@ -26,7 +30,7 @@ class IssueManager
   def list(direction = :desc)
     raise ArgumentError, "Must be one of: " + VALID_DIRECTION unless VALID_DIRECTION.include?(direction.to_sym)
 
-    # Anything with the _issue.md suffix
+    # Anything with the SHORTCODE- prefix
     #
     # i.e. RLP-1, RLP-2, et cetera
     #
@@ -117,6 +121,11 @@ class IssueManager
     end
   end
 
+  #
+  # Gets TTY input for issue data
+  #
+  # @return [Hash]
+  #
   def issue_info_prompt
     prompt = TTY::Prompt.new
 
@@ -139,6 +148,11 @@ class IssueManager
     end
   end
 
+  #
+  # Convenience method for accessing config store values
+  #
+  # @returns [Repository::Config]
+  #
   def config_values
     @config_store.values
   end

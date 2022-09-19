@@ -3,6 +3,10 @@
 require_relative "../helper/time_helper"
 require_relative "../render/log_template_renderer"
 
+#
+# LogManager is an abstraction class to orchestrate the internals
+# of issue management and creation for a repository
+#
 class LogManager
   include TimeHelper
   LOG_FILE_SUFFIX = "log.md"

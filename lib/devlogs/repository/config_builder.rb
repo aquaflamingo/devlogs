@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Repository
   class ConfigBuilder
     def initialize(dirpath)
@@ -157,7 +159,7 @@ class Repository
         data_file = File.join(@config_store.dir, Repository::ConfigStore::DATA_FILE)
 
         #
-        # MARK: Default Data 
+        # MARK: Default Data
         #
         data_info = {
           issues: {
