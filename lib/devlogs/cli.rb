@@ -90,6 +90,29 @@ module Devlogs
     end
 
     #
+    # Lists repository issues
+    #
+    desc "ls_issues", "Lists the repository issues and allows you to select"
+    def ls_issues
+      issues = repo.ls_issues
+
+      binding.pry
+      if issues.empty?
+        puts "No issues present in this repository"
+        exit 0
+      end
+
+      # Use the file names as visible keys for the prompt
+      issue_names = issues.map { |e| File.basename(e) }
+
+      # Build the TTY:Prompt
+      result = build_select_prompt(data: issue_names, text: "Select an issue issue...")
+
+      # Open in paging program
+      Pager.open(issues[result])
+    end
+
+    #
     # Lists repository logs
     #
     desc "ls", "Lists the repository logs and allows you to select"
