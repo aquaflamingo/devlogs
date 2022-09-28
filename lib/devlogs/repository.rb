@@ -27,7 +27,7 @@ class Repository
   #
   # @returns nil
   def create
-    entry_file_path = log_manager.create_entry
+    entry_file_path = log_manager.create
 
     Editor.open(entry_file_path)
 
